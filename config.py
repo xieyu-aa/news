@@ -1,4 +1,4 @@
-from redis import Redis
+from redis import re
 from datetime import timedelta
 import logging
 
@@ -23,3 +23,22 @@ class Config:
 
     # 默认日志级别
     LEVEL_NAME = logging.DEBUG
+    
+
+class DevelopConfig(Config):
+    '''开发环境'''
+    pass
+
+
+class ProductConfig(Config):
+    '''线上环境'''
+    DEBUG = False
+
+
+class   TestConfig(Config):
+    '''测试环境'''
+    pass
+
+
+# 访问统一入口字典
+config_dict = {'develop': DevelopConfig, 'product': ProductConfig, 'test': TestConfig}
