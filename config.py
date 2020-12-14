@@ -1,4 +1,4 @@
-from redis import re
+from redis import Redis
 from datetime import timedelta
 import logging
 
@@ -8,7 +8,7 @@ class Config:
     SECRET_KEY = "fdfdjfkdjfkdf"
 
     #数据库配置信息
-    SQLALCHEMY_DATABASE_URI = "mysql://root:root@localhost:3306/new"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@localhost:3306/new"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     #redis配置信息
