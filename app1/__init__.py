@@ -3,7 +3,7 @@ from logging.handlers import RotatingFileHandler
 
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf.csrf import CsrfProtect
+from flask_wtf.csrf import CsrfProtect, generate_csrf
 from flask import Flask
 from config import config_dict
 from redis import StrictRedis
@@ -21,7 +21,7 @@ def create_app(name):
     CsrfProtect(app)
 
     global redis_store
-    redis_store = StrictRedis()  # 创建redis对象
+    redis_store = StrictRedis(decode_responses=True)  # 创建redis对象
 
     from .news import main   # 解决循环导包
     app.register_blueprint(main)  # 注册蓝图
@@ -32,6 +32,12 @@ def create_app(name):
     from .passport import passport
     app.register_blueprint(passport, url_prefix='/passport')
 
+    @app.after_request
+    def after_request(response):
+        csrf_token = generate_csrf()
+        response.set_cookie('csrf_token', csrf_token)
+        response.set_cookie('nihao', 'hhhh')
+        return response
     return app
 
 

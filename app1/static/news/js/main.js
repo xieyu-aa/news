@@ -125,7 +125,7 @@ $(function(){
             "mobile":mobile,
             "password":password
         }
-        /*
+
         $.ajax({
             url:'/passport/login',
             type:'post',
@@ -142,7 +142,7 @@ $(function(){
 
             }
         })
-        */
+
     })
 
 
@@ -183,7 +183,7 @@ $(function(){
             "sms_code":smscode,
             "password":password
         }
-        /*
+
         $.ajax({
             url:'/passport/register',
             type:'post',
@@ -200,13 +200,13 @@ $(function(){
                 }
             }
         })
-        */
+
     })
 })
 
 //退出登陆
 function logout() {
-    /*
+
     $.ajax({
         url:'/passport/logout',
         type:'post',
@@ -215,7 +215,7 @@ function logout() {
             window.location.reload()
         }
     })
-    */
+
 }
 
 
@@ -269,7 +269,7 @@ function sendSMSCode() {
     }
 
     //发送获取短信请求
-    /*
+
     $.ajax({
         url:'/passport/sms_code',//请求地址
         type:'post',
@@ -310,7 +310,7 @@ function sendSMSCode() {
             }
         }
     })
-    */
+
 }
 
 // 调用该函数模拟点击左侧按钮
