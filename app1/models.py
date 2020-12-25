@@ -73,6 +73,7 @@ class User(BaseModel, db.Model):
         #系统提供的校验密码的方法,check_password_hash,传递密文和明文,返回的是True或者False
         return check_password_hash(self.password_hash, password)
 
+    # 这样的方法：实例对象调用次方法返回包含实例对象所有属性的字典，方便前端html调用属性值
     def to_dict(self):
         resp_dict = {
             "id": self.id,
@@ -108,7 +109,7 @@ class News(BaseModel, db.Model):
     content = db.Column(db.Text, nullable=False)  # 新闻内容
     clicks = db.Column(db.Integer, default=0)  # 浏览量
     index_image_url = db.Column(db.String(256))  # 新闻列表图片路径
-    category_id = db.Column(db.Integer, db.ForeignKey("info_category.id"))
+    category_id = db.Column(db.Integer, db.ForeignKey("info_category.id"))  # 外键新闻分类
     user_id = db.Column(db.Integer, db.ForeignKey("info_user.id"))  # 当前新闻的作者id
     status = db.Column(db.Integer, default=0)  # 当前新闻状态 如果为0代表审核通过，1代表审核中，-1代表审核不通过
     reason = db.Column(db.String(256))  # 未通过原因，status = -1 的时候使用
@@ -164,7 +165,7 @@ class Comment(BaseModel, db.Model):
     content = db.Column(db.Text, nullable=False)  # 评论内容
     parent_id = db.Column(db.Integer, db.ForeignKey("info_comment.id"))  # 父评论id
     parent = db.relationship("Comment", remote_side=[id])  # 自关联
-    like_count = db.Column(db.Integer, default=0)  # 点赞条数
+    like_count = db.Column(db.Integer, default=0)  # 点赞条
 
     def to_dict(self):
         resp_dict = {

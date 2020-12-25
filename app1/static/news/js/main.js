@@ -2,6 +2,7 @@ $(function(){
 
 	// 打开登录框
 	$('.login_btn').click(function(){
+
         $('.login_form_con').show();
 	})
 	
@@ -106,8 +107,8 @@ $(function(){
     // TODO 登录表单提交
     $(".login_form_con").submit(function (e) {
         e.preventDefault()
-        var mobile = $(".login_form #mobile").val()
-        var password = $(".login_form #password").val()
+         var mobile = $(".login_form #mobile").val()
+         var password = $(".login_form #password").val()
 
         if (!mobile) {
             $("#login-mobile-err").show();

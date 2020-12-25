@@ -39,38 +39,38 @@ _softVersion = '2013-12-26'
 #     print(result)
 
 
-class CCP(object):
-    """发送短信的辅助类"""
+# class CCP(object):
+#     """发送短信的辅助类"""
+#
+#     def __new__(cls, *args, **kwargs):
+#         # 判断是否存在类属性_instance，_instance是类CCP的唯一对象，即单例
+#         if not hasattr(CCP, "_instance"):
+#             cls._instance = super(CCP, cls).__new__(cls, *args, **kwargs)
+#             cls._instance.rest = REST(_serverIP, _serverPort, _softVersion)
+#             cls._instance.rest.setAccount(_accountSid, _accountToken)
+#             cls._instance.rest.setAppId(_appId)
+#         return cls._instance
+#
+#     def send_template_sms(self, to, datas, temp_id):
+#         """发送模板短信"""
+#         # @param to 手机号码
+#         # @param datas 内容数据 格式为数组 例如：{'12','34'}，如不需替换请填 ''
+#         # @param temp_id 模板Id
+#         result = self.rest.sendTemplateSMS(to, datas, temp_id)
+#         # 如果云通讯发送短信成功，返回的字典数据result中statuCode字段的值为"000000"
+#         if result.get("statusCode") == "000000":
+#             # 返回0 表示发送短信成功
+#             return 0
+#         else:
+#             # 返回-1 表示发送失败
+#             return -1
 
-    def __new__(cls, *args, **kwargs):
-        # 判断是否存在类属性_instance，_instance是类CCP的唯一对象，即单例
-        if not hasattr(CCP, "_instance"):
-            cls._instance = super(CCP, cls).__new__(cls, *args, **kwargs)
-            cls._instance.rest = REST(_serverIP, _serverPort, _softVersion)
-            cls._instance.rest.setAccount(_accountSid, _accountToken)
-            cls._instance.rest.setAppId(_appId)
-        return cls._instance
 
-    def send_template_sms(self, to, datas, temp_id):
-        """发送模板短信"""
-        # @param to 手机号码
-        # @param datas 内容数据 格式为数组 例如：{'12','34'}，如不需替换请填 ''
-        # @param temp_id 模板Id
-        result = self.rest.sendTemplateSMS(to, datas, temp_id)
-        # 如果云通讯发送短信成功，返回的字典数据result中statuCode字段的值为"000000"
-        if result.get("statusCode") == "000000":
-            # 返回0 表示发送短信成功
-            return 0
-        else:
-            # 返回-1 表示发送失败
-            return -1
+# if __name__ == '__main__':
 
-
-if __name__ == '__main__':
-
-    ccp = CCP()
+    # ccp = CCP()
     # 注意： 测试的短信模板编号为1
-    ccp.send_template_sms('15243810133', ['1234', 5], 1)
+    # ccp.send_template_sms('15243810133', ['1234', 5], 1)
 
 
     # sendTemplateSMS("18304083796",["666888",5],1)

@@ -1,6 +1,5 @@
 from flask import Blueprint
 
+news = Blueprint('news', __name__)
 
-main = Blueprint('news', __name__)
-
-from . import views
+from .views import news

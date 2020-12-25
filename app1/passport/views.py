@@ -6,7 +6,7 @@ from app1 import redis_store, db
 from flask import request, current_app, make_response, jsonify, session
 from app1 import constants
 import re
-from app1.libs.yuntongxun.sms import CCP
+# from app1.libs.yuntongxun.sms import CCP
 import random
 from app1.utils.response_code import RET
 from app1.models import User

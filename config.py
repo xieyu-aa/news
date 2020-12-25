@@ -10,7 +10,7 @@ class Config:
     #数据库配置信息
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@localhost:3306/new"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # 改变数据内容后， 视图函数结束自动提交commit
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # 改变数据内容后， 视图函数结束自动提交commit给数据库(不用写db.session.commit)
 
     #redis配置信息
     REDIS_HOST = "127.0.0.1"

@@ -7,6 +7,7 @@ from flask_wtf.csrf import CsrfProtect, generate_csrf
 from flask import Flask
 from config import config_dict
 from redis import StrictRedis
+from app1.utils.commons import color_hot_new
 
 db = SQLAlchemy()
 redis_store = None
@@ -23,8 +24,9 @@ def create_app(name):
     global redis_store
     redis_store = StrictRedis(decode_responses=True)  # 创建redis对象
 
-    from .news import main   # 解决循环导包
-    app.register_blueprint(main)  # 注册蓝图
+    # 注册蓝图
+    from .index import index_blue
+    app.register_blueprint(index_blue)
 
     from .admin import admin
     app.register_blueprint(admin, url_prefix='/admin')
@@ -32,6 +34,16 @@ def create_app(name):
     from .passport import passport
     app.register_blueprint(passport, url_prefix='/passport')
 
+    from .news import news
+    app.register_blueprint(news, url_prefix='/news')
+
+    from .profile import profile
+    app.register_blueprint(profile, url_prefix='/user')
+
+    # 注册自定义过滤器
+    app.add_template_filter(color_hot_new, 'my_filter')
+
+    # 钩子来给cookie添加csrf
     @app.after_request
     def after_request(response):
         csrf_token = generate_csrf()
