@@ -3,27 +3,27 @@
 <head>
 	<meta charset="UTF-8">
 	<title>用户中心</title>
-	<link rel="stylesheet" type="text/css" href="../css/reset.css">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.pagination.css">
-    <link rel="stylesheet" type="text/css" href="../css/main.css">
-    <script type="text/javascript" src="../js/jquery-1.12.4.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.pagination.min.js"></script>
-    <script type="text/javascript" src="../js/user_follow.js"></script>
+	<link rel="stylesheet" type="text/css" href="../static/news/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/news/css/jquery.pagination.css">
+    <link rel="stylesheet" type="text/css" href="../static/news/css/main.css">
+    <script type="text/javascript" src="../static/news/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="../static/news/js/jquery.pagination.min.js"></script>
+    <script type="text/javascript" src="../static/news/js/user_follow.js"></script>
 </head>
 <body class="inframe_body">
         <h3 class="common_title">我的关注</h3>
         <ul class="card_list_con">
-            {# 遍历关注人信息 #}
+            {# 遍历关注人信息列表 #}
             {% for user in data.user_dict_list %}
-                <li class="author_card card_list">
-                    <a href="#" target="_blank" class="author_pic"><img src="../images/cat.jpg" alt="author_pic"></a>
-                    <a href="#" target="_blank" class="author_name">{{ user.nick_name }}</a>
-                    <div class="author_resume">{{ user.signature }}</div>
-                    <div class="writings"><span>总篇数</span><b>{{ user.news_count }}</b></div>
-                    <div class="follows"><span>粉丝</span><b>{{ user.followers_count }}</b></div>
-                    <a href="javascript:;" class="focus fr">关注</a>
-                    <a href="javascript:;" class="focused fr"><span class="out">已关注</span><span class="over">取消关注</span></a>
-                </li>
+                 <li class="author_card card_list">
+                <a href="#" target="_blank" class="author_pic"><img src="{% if user.avatar_url %}{{ user.avatar_url }}{% else %}../static/news/images/cat.jpg{% endif %}" alt="author_pic"></a>
+                <a href="#" target="_blank" class="author_name">{{ user.nick_name }}</a>
+                <div class="author_resume">{{ user.signature }}</div>
+                <div class="writings"><span>总篇数</span><b>{{ user.news_count }}</b></div>
+                <div class="follows"><span>粉丝</span><b>{{ user.followers_count }}</b></div>
+                {#<a href="javascript:;" class="focus fr">关注</a>#}
+                <a href="javascript:;" class="focused fr" data-userid="{{ user.id }}"><span class="out">已关注</span><span class="over">取消关注</span></a>
+            </li>
             {% endfor %}
             {#
             <li class="author_card card_list">
@@ -69,8 +69,8 @@
         <script>
             $(function() {
                 $("#pagination").pagination({
-                    currentPage: {{ user.currentPage }},
-                    totalPage: {{ user.totalPage }},
+                    currentPage: {{ data.currentPage }},
+                    totalPage:{{ data.totalPage }},
                     callback: function(current) {
                         window.location.href = '/user/follow?page=' + current
                     }

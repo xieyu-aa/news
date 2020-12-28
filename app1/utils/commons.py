@@ -13,6 +13,7 @@ def color_hot_new(index):
     else:
         return ''
 
+
 # 自定义装饰器获取用户登录信息
 def login_user(func):
     @wraps(func)

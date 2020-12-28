@@ -43,6 +43,7 @@ def create_app(name):
     # 注册自定义过滤器
     app.add_template_filter(color_hot_new, 'my_filter')
 
+
     # 钩子来给cookie添加csrf
     @app.after_request
     def after_request(response):

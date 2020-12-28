@@ -59,13 +59,20 @@ def news_detail(id):
         if g.user and item.id in mylikes_comment_id:
             comment_dict['is_like'] = True
         comments_list.append(comment_dict)
-    # 渲染需要的数据
+    # 7.关注新闻作者信息
+    is_followed = False
+    if g.user and new.user:
+        if g.user in new.user.followers:
+            is_followed = True
+
+    # 8.渲染需要的数据
     data = {
         'user_info':g.user.to_dict() if g.user else '',  # 用户信息字典
-        'news_dateil_dict':new.to_dict(),   # 新闻详情字典
+        'news_dateil_dict':new.to_dict(),   # 新闻信息字典
         'news_list':news_list,  # 热门新闻对象列表
         'is_collected':is_collected,  # 判断收藏信息
-        'comments':comments_list    # 评论信息字典列表
+        'comments':comments_list,   # 评论信息字典列表
+        'is_followed':is_followed  # 关注信息
     }
     return render_template('news/detail.html',data=data)
 
@@ -198,11 +205,6 @@ def comment_like():
         # 取消点赞
         else:
             my_commentlike = CommentLike.query.filter(CommentLike.user_id == g.user.id, CommentLike.comment_id == comment_id).first()
-            print(CommentLike.query.filter_by(user_id = 1, comment_id = 1).first())
-            print(CommentLike.query.filter_by(user_id = '1', comment_id = '1').first())
-            print(CommentLike.query.filter(CommentLike.user_id == 1, CommentLike.comment_id == 1).first())
-            print(CommentLike.query.filter(CommentLike.user_id == '1', CommentLike.comment_id == '1').first())
-            print(type(my_commentlike.comment_id))
             if  my_commentlike:
                 db.session.delete(my_commentlike)
                 if comment.like_count >0:
@@ -212,3 +214,51 @@ def comment_like():
         current_app.logger.error(e)
         return jsonify(errno=RET.DBERR, errmsg='操作失败')
     return jsonify(errno=RET.OK, errmsg='操作成功')
+
+
+# 功能：关注/取消关注
+# 请求方式：post
+# 请求路径：/news/followed_user
+# 参数：news_id, action
+# 返回值：收藏的状态
+@news.route('/followed_user', methods=['POST'])
+@login_user
+def followed_user():
+    if not g.user:
+        return jsonify(errno=RET.PARAMERR, errmsg='用户未登录')
+    # 1.取参数
+    user_id = request.json.get('user_id')
+    action = request.json.get('action')
+    # 2.校验参数
+    if not all(['user_id','action']):
+        return jsonify(errno=RET.PARAMERR, errmsg='参数不全')
+    if action not in ['follow','unfollow']:
+        return jsonify(errno=RET.DATAERR, errmsg='参数错误')
+    # 3.判断作者存在
+    try:
+        news_user = User.query.get(user_id)
+    except Exception as e:
+        current_app.logger.error(e)
+        return jsonify(errno=RET.DBERR, errmsg='操作数据库失败')
+    if not news_user:
+        return jsonify(errno=RET.NODATA, errmsg='作者不存在')
+    # 4.判断action类型
+    try:
+        if action == 'follow':
+            followed_list = User.query.get(g.user.id).followed
+            if news_user not in followed_list:
+                followed_list.append(news_user)
+        else:
+            followed_list = User.query.get(g.user.id).followed
+            news_user = User.query.get(user_id)
+            if news_user in followed_list:
+                followed_list.remove(news_user)
+    except Exception as e:
+        current_app.logger.error(e)
+        db.session.rollback()
+        return jsonify(errno=RET.DBERR, errmsg='操作数据库失败')
+    # 4.返回响应
+    return jsonify(errno=RET.OK, errmsg='操作成功')
+
+
+
